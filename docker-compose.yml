@@ -1,0 +1,33 @@
+version: '3.2'
+
+services:
+    php-fpm:
+        build:
+            context: .
+        restart: always
+        volumes:
+            - ./src:/var/www
+
+    nginx:
+        image: nginx:latest
+        restart: always
+        ports:
+            - 80:80
+        volumes:
+            - ./src:/var/www
+            - ./nginx:/etc/nginx/conf.d
+            
+    db:
+        image: mariadb:latest
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: 123456
+            MARIADB_DATABASE: exam
+
+    phpmyadmin:
+        image: phpmyadmin:latest
+        restart: always
+        ports:
+            - 8080:80
+        environment:
+            - PMA_ARBITRARY=1
